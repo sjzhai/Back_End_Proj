@@ -33,75 +33,74 @@ class Default:
             num_part += num
         # 连接字母十进制部分和数字部分
         concat = int(let_part + num_part)
-        if list_len > 1:
-            self.qsort(self.name_li, 0, list_len-1)
-        if not self.repetition(self.name_li, concat, 0, list_len-1):
-            self.name_li.append(concat)
-        else:
+        # if list_len > 1:
+        #     self.qsort(self.name_li, 0, list_len-1)
+        if self.repetition(self.name_li, concat, 0, list_len-1):
             print("---repetition---")
             self.default_name()
         return name
 
-    def qsort(self, li, left, right):
-        """
-        输入型: list, int, int
-        输出型: list
-        排序列表供查找
-        """
-        def partition(li, left, right):
-            """
-            输入型: list, int, int
-            输出型: int
-            以基值为标准，比较并交换值
-            """
-            i = left
-            j = right
-            base = li[j]
-            while(i < j):
-                while(i < j and li[i] <= base):
-                    i += 1
-                li[j] = li[i]
-                while(i < j and li[j] >= base):
-                    j -= 1
-                li[i] = li[j]
-            li[j] = base
-            return j
-
-        i = left
-        j = right
-        stack = []
-        stack.append(i)
-        stack.append(j)
-        while stack:
-            j = stack.pop()
-            i = stack.pop()
-            bar = partition(li, i, j)
-            if bar-1 > i:
-                stack.append(i)
-                stack.append(bar-1)
-            if bar+1 < j:
-                stack.append(bar+1)
-                stack.append(j)
-        return li
+    # def qsort(self, li, left, right):
+    #     """
+    #     输入型: list, int, int
+    #     输出型: list
+    #     排序列表供查找
+    #     """
+    #     def partition(li, left, right):
+    #         """
+    #         输入型: list, int, int
+    #         输出型: int
+    #         以基值为标准，比较并交换值
+    #         """
+    #         i = left
+    #         j = right
+    #         base = li[j]
+    #         while(i < j):
+    #             while(i < j and li[i] <= base):
+    #                 i += 1
+    #             li[j] = li[i]
+    #             while(i < j and li[j] >= base):
+    #                 j -= 1
+    #             li[i] = li[j]
+    #         li[j] = base
+    #         return j
+    #
+    #     i = left
+    #     j = right
+    #     stack = []
+    #     stack.append(i)
+    #     stack.append(j)
+    #     while stack:
+    #         j = stack.pop()
+    #         i = stack.pop()
+    #         bar = partition(li, i, j)
+    #         if bar-1 > i:
+    #             stack.append(i)
+    #             stack.append(bar-1)
+    #         if bar+1 < j:
+    #             stack.append(bar+1)
+    #             stack.append(j)
+    #     return li
 
     def repetition(self, li, num, start, end):
         """
         输入型: list, int, int, int
         输出型: boolean
-        查找名字是否在列表中重复出现
+        查找名字是否在列表中重复出现，并插入
         """
+        bar = (end + start) // 2
         if start <= end:
-            bar = (end + start) // 2
+
             if num < li[bar]:
                 return self.repetition(li, num, start, bar-1)
             elif num > li[bar]:
                 return self.repetition(li, num, bar+1, end)
             elif num == li[bar]:
                 return True
-        return False
+        self.name_li.insert(bar+1, num)
 
 if __name__ == '__main__':
     De = Default()
     for i in range(10000):
         name_gen = De.default_name()
-        print(name_gen)
+        print(i, name_gen)
